@@ -1,6 +1,5 @@
 import { Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import { useFonts } from 'expo-font';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { View } from 'react-native';
 import { ThemeProvider } from 'styled-components';
@@ -15,14 +14,13 @@ export default function App() {
   });
 
   if(!fontsLoaded){
-      return (<View />)
+      return (<View/>)
   }
 
   return (
-    <ThemeProvider theme={theme}>
-          <Home/>
-    </ThemeProvider>
-    
+      <ThemeProvider theme={theme}>
+            <Home/>
+      </ThemeProvider>   
   );
 }
 
