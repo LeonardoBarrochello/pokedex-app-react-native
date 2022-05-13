@@ -7,6 +7,7 @@ import SmallCard from "../../components/SmallCard";
 import { api } from "../../services/api";
 import { PokemonDTO } from "../../dtos/PokemonDTO";
 import { FlatList, TouchableWithoutFeedback , Keyboard } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 
 export default function Home(){
@@ -16,6 +17,13 @@ export default function Home(){
     const [pokemons , setPokemons ] = useState<PokemonDTO[]>([]);
     const [pokemonsFiltro , setPokemonsFiltro ] = useState<PokemonDTO[]>([]);
 
+    const navigation = useNavigation();
+
+    function navegarParaDetalhes(pokemon : PokemonDTO){
+        navigation.navigate('Detalhes' as never , {
+            pokemon
+        } as never)
+    }
     function handleFiltro(){
          setDecrescente(!decrescente);
     };
@@ -29,7 +37,6 @@ export default function Home(){
     }
 
     async function getPokemons(){
-
         try {
             const filtro = decrescente ? '?_sort=name&_order=desc' : '?_sort=name&_order=asc';
     
@@ -73,6 +80,7 @@ export default function Home(){
                     <InputTexto
                         onChangeText={alteraNomeFiltro}
                         placeholder="Procurar"
+                        value={nomeFiltro}
                         keyboardAppearance="dark"
                     />
 
@@ -91,7 +99,7 @@ export default function Home(){
                                 width: '100%'
                             }
                         }
-                        renderItem={({item}) => (<SmallCard pokemon={item} />)}
+                        renderItem={({item}) => (<SmallCard onPress={() => navegarParaDetalhes(item)} pokemon={item} />)}
                     />
 
             </Container>

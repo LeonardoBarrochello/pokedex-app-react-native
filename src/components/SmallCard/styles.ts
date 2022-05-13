@@ -1,12 +1,12 @@
 import styled from "styled-components/native";
+import { PokemonName } from "../../dtos/PokemonDTO";
 
-interface Props {
-    type : string;
-
+interface Props{
+    type: PokemonName;
 }
 
 export const Container = styled.TouchableOpacity<Props>`
-    align-items: center;
+    align-items: center; 
     width: 104px;
     height: 118px;
     border-radius: 8px;
