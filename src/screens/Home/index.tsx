@@ -17,13 +17,7 @@ export default function Home(){
     const [pokemons , setPokemons ] = useState<PokemonDTO[]>([]);
     const [pokemonsFiltro , setPokemonsFiltro ] = useState<PokemonDTO[]>([]);
 
-    const navigation = useNavigation();
-
-    function navegarParaDetalhes(pokemon : PokemonDTO){
-        navigation.navigate('Detalhes' as never , {
-            pokemon
-        } as never)
-    }
+  
     function handleFiltro(){
          setDecrescente(!decrescente);
     };
@@ -99,7 +93,7 @@ export default function Home(){
                                 width: '100%'
                             }
                         }
-                        renderItem={({item}) => (<SmallCard onPress={() => navegarParaDetalhes(item)} pokemon={item} />)}
+                        renderItem={({item}) => (<SmallCard pokemon={item} />)}
                     />
 
             </Container>

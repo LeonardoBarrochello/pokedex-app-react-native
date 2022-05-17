@@ -4,15 +4,26 @@ import Charmander from '../../assets/pokemons/Charmander.svg'
 import { PokemonDTO } from "../../dtos/PokemonDTO";
 import retornaSvg from "../../utils/retornaSvg";
 import { TouchableOpacityProps } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-interface SmallCardProps extends TouchableOpacityProps {
+interface SmallCardProps {
       pokemon : PokemonDTO;
 }
 
 export default function SmallCard( { pokemon , ...rest } : SmallCardProps){
      console.log(pokemon)
+     
+     const navigation = useNavigation();
+
+     function navegarParaDetalhes(pokemon : PokemonDTO){
+         navigation.navigate('Detalhes' as never , {
+             pokemon
+         } as never)
+     }
+     
      return (
         <Container 
+          onPress={() => navegarParaDetalhes(pokemon)}
           type={pokemon.types[0].name}
           {...rest} 
         > 
