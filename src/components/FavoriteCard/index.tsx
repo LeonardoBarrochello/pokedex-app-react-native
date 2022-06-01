@@ -1,67 +1,83 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React from "react";
-import { useTheme } from "styled-components";
-import { PokemonDTO } from "../../dtos/PokemonDTO";
-import retornaSvg from "../../utils/retornaSvg";
-import TypeCard from "../TypeCard";
-import { Botao, Container, ConteudoSvg, ConteudoTexto, Descricao, LabelBold, Opcao, Tipos } from "./styles";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
+import { Alert } from 'react-native';
+import { useTheme } from 'styled-components';
+import { PokemonDTO } from '../../dtos/PokemonDTO';
+import retornaSvg from '../../utils/retornaSvg';
+import TypeCard from '../TypeCard';
+import { Botao, Container, ConteudoSvg, ConteudoTexto, Descricao, LabelBold, Opcao, Tipos } from './styles';
 
-
-interface FavoriteCardProps {
-     pokemon : PokemonDTO;
+interface FavoriteCardProps{
+    pokemon: PokemonDTO;
+    funcaoRemover: (id: number) => void;
 }
 
-export default function FavoriteCard({pokemon} : FavoriteCardProps){
+function FavoriteCard({pokemon, funcaoRemover} : FavoriteCardProps){
 
-    const theme = useTheme();
+    const tema = useTheme();
 
-    return(
+    function removerPokemonFavoritos(pokemon: PokemonDTO){
+        Alert.alert('Confirme', 
+        `Deseja realmente remover o ${pokemon.name} do seus favoritos?`,
+        [
+            {
+                text: 'Não 😊',
+                style: "cancel",
+                onPress: () => {}                
+            },
+            {
+                text: 'Sim 😢',
+                onPress: () => funcaoRemover(pokemon.id)                
+            }
+        ])
+    }
+
+    return (
         <Container>
             <ConteudoSvg>
-                    {retornaSvg(pokemon.name,95,97)}
+                {retornaSvg(pokemon.name, 95, 97)}
             </ConteudoSvg>
             <ConteudoTexto>
-                 <Descricao>
+                <Descricao>
                     <LabelBold 
-                        type={pokemon.types[0].name} 
+                        type={pokemon.types[0].name}
                     >
                         {pokemon.name}
                     </LabelBold>
                     <LabelBold 
-                        type={pokemon.types[0].name} 
+                        type={pokemon.types[0].name}
                         style={{
-                            marginLeft:30
+                            marginLeft: 30
                         }}
                     >
                         {pokemon.code}
                     </LabelBold>
-                 </Descricao>
-                 <Tipos>
-                     {
-                        pokemon.types.map((p) => (
-                            <TypeCard
-                                key={p.id}
-                                tipoPokemon={p}
+                </Descricao>
+                <Tipos>
+                    {
+                        pokemon.types.map(t => (
+                            <TypeCard 
+                                tipoPokemon={t}
+                                key={t.id}
                             />
-
-                        ) )
-                     
-                     }
-                   
-                 </Tipos>
+                        ))
+                    }
+                    
+                </Tipos>
             </ConteudoTexto>
             <Opcao>
-                 <Botao>
-                      <MaterialCommunityIcons
-                            name="heart-broken"
-                            size={20}
-                            color={theme.primary}
-                      />
-                 </Botao>
+                <Botao 
+                    onPress={() => removerPokemonFavoritos(pokemon)}
+                >
+                    <MaterialCommunityIcons 
+                        name='heart-broken' 
+                        size={20}
+                        color={tema.primary}
+                    />
+                </Botao>
             </Opcao>
-           
         </Container>
-
-
     )
 }
+
+export default FavoriteCard;

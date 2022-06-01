@@ -1,9 +1,13 @@
 import React from "react";
 import { Image } from "react-native";
+import { useAuth } from "../../hooks/auth";
 import { BackgroundImage, BotaoSair, Container, Conteudo, Header, Sair, Titulo } from "./styles";
 
 
 export default function Perfil(){
+
+    const {usuario , logoff} = useAuth()
+
     return(
         <Container>
                 <Header>
@@ -20,12 +24,12 @@ export default function Perfil(){
                                     style={{
                                         width: 130,
                                         height:130,
-                                        borderRadius:50
+                                        borderRadius:65
                                     }}
                               />
                         </BackgroundImage>
-                        <Titulo>Leonardo</Titulo>
-                        <BotaoSair>
+                        <Titulo>{usuario?.usuarioNome}</Titulo>
+                        <BotaoSair  onPress={logoff} >
                                 <Sair>Sair</Sair>
                         </BotaoSair>
                 </Conteudo>

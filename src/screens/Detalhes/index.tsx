@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import {  View } from "react-native";
 import { PokemonDTO } from "../../dtos/PokemonDTO";
 import retornaSvg from "../../utils/retornaSvg";
 import { BotaoHeader, Codigo, Container, Conteudo, ConteudoSvg, ConteudoTitulo, Header, LabelDestaque, Nome, Sobre, Tipos } from "./styles";
@@ -10,21 +10,26 @@ import { useTheme } from "styled-components";
 import TypeCard from "../../components/TypeCard";
 import AboutData from "../../components/AboutData";
 import BaseStats from "../../components/BaseStats";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FavoritoDTO } from "../../dtos/FavoritoDTO";
+import { useAuth } from "../../hooks/auth";
 
 
 interface ParametrosRota {
     pokemon : PokemonDTO
 }
 
+const FAVORITOS_KEY = "@pokedex:favoritos";
+
 export default function Detalhes(){
 
     const [pokemon , setPokemon] = useState<PokemonDTO>();
+    const { usuario } = useAuth()
     const theme = useTheme();
     const route = useRoute();
 
     useEffect(() => {
         const parametros = route.params as ParametrosRota;
-        console.log(parametros.pokemon);
         setPokemon(parametros.pokemon);
     }, [])
 
@@ -32,6 +37,21 @@ export default function Detalhes(){
 
     function voltar(){
         navigation.goBack();
+    }
+
+    async function addFavoritos( pokemon : PokemonDTO){
+       const pokemonString = JSON.stringify(pokemon);
+       const favoritosStorage = await AsyncStorage.getItem(FAVORITOS_KEY);
+     
+       const favoritosParse = favoritosStorage ?JSON.parse(favoritosStorage) as FavoritoDTO[] : [];
+       favoritosParse.push({
+                id  : Math.random(),
+                pokemon,
+                usuario : usuario!
+        });
+
+       await AsyncStorage.setItem(FAVORITOS_KEY , JSON.stringify(favoritosParse))
+           
     }
 
     if(!pokemon) return <View/>
@@ -53,7 +73,7 @@ export default function Detalhes(){
                         <Codigo>{pokemon.code}</Codigo>
                     </ConteudoTitulo>
 
-                    <BotaoHeader>
+                    <BotaoHeader onPress={() => addFavoritos(pokemon) } >
                          <MaterialCommunityIcons 
                             name="heart"
                             size={22}
@@ -63,7 +83,7 @@ export default function Detalhes(){
                 </Header>
                 <Conteudo>
                       <ConteudoSvg>
-                            {retornaSvg(pokemon.name , 200 ,200)}
+                            {retornaSvg(pokemon.name,200,200)}
                       </ConteudoSvg>
                       <Tipos>
                            {

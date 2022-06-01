@@ -11,7 +11,6 @@ interface SmallCardProps {
 }
 
 export default function SmallCard( { pokemon , ...rest } : SmallCardProps){
-     console.log(pokemon)
      
      const navigation = useNavigation();
 

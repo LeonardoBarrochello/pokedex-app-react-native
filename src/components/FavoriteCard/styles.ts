@@ -12,7 +12,7 @@ export const Container = styled.View`
     background-color: ${({theme}) => theme.white };
     border-radius: 8px;
     align-items: center;
-    margin-bottom:41px;
+    margin-bottom: 41px;
     justify-content: space-between;
     shadow-color : ${({theme}) => theme.dark_gray };
     shadow-offset : 0px 4px;

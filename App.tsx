@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import React from 'react';
 import { View } from 'react-native';
 import { ThemeProvider } from 'styled-components';
+import {AuthProvider} from './src/hooks/auth';
 import { Routes } from './src/routes';
 import Detalhes from './src/screens/Detalhes';
 import Home from './src/screens/Home';
@@ -21,7 +22,9 @@ export default function App() {
 
   return (
       <ThemeProvider theme={theme}>
-            <Routes/>
+            <AuthProvider>
+                <Routes/>
+            </AuthProvider> 
       </ThemeProvider>   
   );
 }
